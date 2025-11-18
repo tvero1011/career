@@ -1,0 +1,1 @@
+Notes from git diff and git log commands.
