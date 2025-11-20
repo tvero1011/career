@@ -1,7 +1,7 @@
 # AWS Week 3 Day 5 — VPC Networking Lab  
 Public Subnet + Private Subnet + NAT Gateway + Bastion Host
 
-## 🔥 Goal
+## Goal
 Build a secure 2-tier AWS network from scratch using:
 - A public subnet with a bastion host (SSH entry point)
 - A private subnet with an internal-only EC2 instance
@@ -104,9 +104,7 @@ week3-private-sg (for Private EC2):
 
 ──────────────────────────────────────────────────────────
 
-
-
-## 🏗️ Architecture Overview
+## Architecture Overview
 This lab creates the following architecture:
 
 - **VPC:** 10.0.0.0/16  
@@ -128,41 +126,35 @@ This lab creates the following architecture:
   - `week3-private-sg`  
     - SSH (22) — Source: week3-public-sg 
 
-## 🧪 Test Results
+## Test Results
 See test-results.md for complete outputs.
 
----
-
-## 📡 Architecture Diagram
+## Architecture Diagram
 See `architecture-diagram.png`.
 
----
+## What I Learned
 
-## 📘 What I Learned
-
-### 🔹 VPC Basics  
+### VPC Basics  
 How IP ranges and subnetting work in AWS.
 
-### 🔹 Public vs Private Subnets  
+### Public vs Private Subnets  
 - Public subnet → IGW route  
 - Private subnet → no public access, uses NAT
 
-### 🔹 NAT Gateway  
+### NAT Gateway  
 Allows private instances to access internet securely.
 
-### 🔹 Bastion Host  
+### Bastion Host  
 Used as a “jump server” to reach the private EC2.
 
-### 🔹 Security  
+### Security  
 - Restricting SSH only from My IP  
 - Private EC2 only accessible through bastion SG
 
-### 🔹 Troubleshooting Skills  
+### Troubleshooting Skills  
 - Checking routes  
 - Verifying SGs  
 - Debugging NAT / IGW flow
-
----
 
 ## 🏁 Final Outcome
 You now know how to build **real AWS production-style VPC architecture**, which is used in 90% of cloud engineering jobs.
