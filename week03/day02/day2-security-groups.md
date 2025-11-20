@@ -1,86 +1,150 @@
-# Week 3 — Day 2: Security Groups + Key Pair
+# Week 3 Day 2 — Security Groups (AWS Networking)
 
-## 1. What I Did Today
-- Studied AWS Security Group fundamentals.
-- Created two security groups: **web-sg** and **app-sg**.
-- Configured inbound rules for HTTP, HTTPS, SSH, and port 3000.
-- Learned SG-to-SG referencing (important for multi-tier architecture).
-- Created a new key pair (`week3-app-keypair.pem`) for secure SSH access.
-- Took screenshots and documented everything.
+## Goal of the Day
+Understand and configure AWS Security Groups, including:
+- Inbound & outbound rules
+- Allowing SSH correctly
+- Allowing HTTP for web servers
+- Using My IP vs Anywhere
+- Security Group-to-Security Group communication
+- Testing rules with EC2 instances
 
----
+This is one of the most important networking fundamentals for DevOps engineers.
 
-## 2. Security Groups Created
+# PART 1 — Launch EC2 for Testing
 
-### 🔹 web-sg (Public Web Server)
-**Inbound Rules:**
-22 — SSH — My IP
-80 — HTTP — 0.0.0.0/0
-443 — HTTPS — 0.0.0.0/0
+### EC2 Settings:
+Name: week3-sg-test
+AMI: Amazon Linux 2
+Instance Type: t2.micro
+Key Pair: my-ec2-key
+Security Group: week3-sg-main (created during launch)
 
-yaml
-Copy code
+After launch, copied the **Public IP** and SSH’d into it:
+ssh -i my-ec2-key.pem ec2-user@<public-ip>
 
----
+# PART 2 — Initial Security Group Configuration
 
-### 🔹 app-sg (Backend App Group)
-**Inbound Rules:**
-3000 — TCP — Source: web-sg
+Security Group created: **week3-sg-main**
 
-yaml
-Copy code
+### Inbound Rules:
+| Type | Port | Source | Purpose |
+|------|------|--------|---------|
+| SSH  | 22   | My IP  | Secure remote login |
+| HTTP | 80   | Anywhere (0.0.0.0/0) | Public web access |
 
-This means only EC2 instances inside **web-sg** can connect to the backend app on port 3000.
+### Outbound Rules:
+- All traffic allowed (AWS default)
 
----
+# TEST 1 — SSH Access
 
-## 3. Screenshots
+Before allowing SSH from My IP:
+ssh -i key.pem ec2-user@<public-ip>
 
-Upload your screenshots to:
-week3/images/
+Expected: **SUCCESS**
+Why?
+Because SG rule allows SSH only from your home IP → secure.
 
-yaml
-Copy code
+# TEST 2 — HTTP Access (Web Traffic)
 
-Then paste them below:
+I installed Nginx just to test HTTP rule:
+sudo amazon-linux-extras enable nginx1
+sudo yum install nginx -y
+sudo systemctl start nginx
 
-### web-sg inbound rules  
-![web-sg](images/day2-web-sg.png)
+Opened browser:
+http://<public-ip>
 
-### app-sg inbound rules  
-![db-sg](images/day2-app-sg.png)
+Expected:  
+Page loads because HTTP (80) from Anywhere is allowed.
 
-### app-sg rule showing "Source = web-sg"  
-![sg-source](images/day2-sg-source.png)
+# PART 3 — SG-to-SG Communication
 
-### key pair created  
-![keypair](images/day2-keypair.png)
+Created a **second** EC2:
+Name: week3-backend-ec2
+Security Group: week3-sg-backend
 
-*(GitHub automatically generates image links when you upload screenshots.)*
+Backend SG rules:
+- Inbound:
+  - SSH (22) from **week3-sg-main**
+- Outbound:
+  - All allowed
 
----
+This means:
+- Public EC2 → can SSH into backend EC2
+- Internet → **cannot** SSH to backend EC2
+- Backend is protected (private-style)
 
-## 4. Key Pair Details
-Key Pair Name: week3-app-keypair
-Type: RSA
-Format: .pem
-Purpose: Used for SSH login to EC2 instances
+### Test SSH from EC2 → EC2
+From the first instance:
+ssh ec2-user@<backend-private-ip>
 
-yaml
-Copy code
+Expected:  
+✔ SSH succeeds because SG rule allows SG-to-SG.
 
----
+# Real-World SG Principles Learned
 
-## 5. Notes & Learnings
-- Security Groups are **stateful** — return traffic is automatically allowed.
-- SGs cannot block traffic (no deny rules).
-- Best practice: SSH (22) should always be locked to **My IP**, never 0.0.0.0/0.
-- SG-to-SG referencing is how real AWS architectures securely connect layers.
-- app-sg becomes more secure because it does *not* allow public access.
+### Least privilege  
+Never open unnecessary ports.
 
----
+### My IP for SSH  
+Most secure method for remote login.
 
-## 6. Summary (3–4 sentences)
-Today I learned how AWS Security Groups work and how to configure them for real architectures. I created a public-facing security group for web traffic and a private application security group restricted to web-sg. I also generated a new SSH key pair for secure access. All configurations and screenshots were documented in GitHub.
+### SG-to-SG is powerful  
+Used in production for:
+- web tier → app tier  
+- app tier → database tier  
 
----
+### Outbound is usually open  
+Used by:
+- package installs  
+- OS updates  
+- API calls  
+
+### SGs are stateful  
+If inbound is allowed, return traffic is automatically allowed.
+
+# Key Concepts Mastered
+
+### 1. **Inbound vs Outbound**
+Inbound = who can access you  
+Outbound = who you access
+
+### 2. **CIDR blocks**
+- 0.0.0.0/0 = public internet
+- /32 = one IP (My IP)
+- private CIDRs (10.x, 172.x, 192.168.x)
+
+### 3. **SSH security**
+- Never open SSH to the world
+- Always restrict to your IP
+
+### 4. **HTTP/HTTPS rules**
+Web needs to be open
+App/DB does NOT need to be open
+
+### 5. **SG chaining**
+Web SG → App SG → DB SG  
+(Production model)
+
+
+# Test Summary
+
+| Test | Expected | Result |
+|------|----------|--------|
+| SSH into main EC2 | Allowed (My IP) | PASS |
+| Nginx HTTP access | Allowed (0.0.0.0/0) | PASS |
+| Backend SSH from laptop | Blocked | PASS |
+| Backend SSH from main EC2 | Allowed (SG-to-SG) | PASS |
+
+# Bonus — Commands Used
+
+sudo yum update -y
+sudo amazon-linux-extras enable nginx1
+sudo yum install nginx -y
+sudo systemctl start nginx
+
+Check internal networking:
+hostname -I
+curl localhost
+
