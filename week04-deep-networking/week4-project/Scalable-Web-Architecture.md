@@ -23,15 +23,14 @@ This mirrors a real-world AWS production setup.
 - Private subnets route: NAT Gateway
 
 # 2. Launch Template
-- AMI used: week3-nginx-ami
+- AMI used: amazon-linux
 - Instance type: t2.micro
 - Security group: allow ALB only
 - User data:
-
-#!/bin/bash
-sudo yum install -y nginx
-sudo systemctl start nginx
-echo "<h1>Server: $(hostname)</h1>" > /usr/share/nginx/html/index.html
+                #!/bin/bash
+                sudo yum install -y nginx
+                sudo systemctl start nginx
+                echo "<h1>Server: $(hostname)</h1>" > /usr/share/nginx/html/index.html
 
 
 # 3. Auto Scaling Group
