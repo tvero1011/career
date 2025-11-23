@@ -1,6 +1,6 @@
 ## Integrating VPC + ALB + ASG (Full Architecture Assembly)
 
-### 🎯 Objective
+### Objective
 Today you will combine all components you built earlier this week:
 - VPC with public + private subnets  
 - Internet Gateway + NAT Gateway  
@@ -11,17 +11,10 @@ Today you will combine all components you built earlier this week:
 
 This creates a **production-style scalable architecture.**
 
----
-
 # 1. Final Architecture Flow
 
 Users → ALB (public subnets) → Target Group → ASG → EC2 (private subnets)
 Private subnets → NAT Gateway → Internet (for updates)
-
-markdown
-Copy code
-
----
 
 # 2. Review of Required Components
 
@@ -36,8 +29,6 @@ Copy code
 - **EC2/ASG SG** → Allow HTTP **from ALB SG only**  
 
 **Never allow 0.0.0.0/0 on private EC2 instances.**
-
----
 
 # 3. Integration Steps (What I Completed)
 
@@ -74,11 +65,7 @@ Copy code
 - [ ] Refresh → different EC2 hostnames  
 - [ ] Target group shows **healthy** instances  
 
----
-
 # 4. Verification Screenshots
-
-Add these:
 
 - [ ] VPC dashboard  
 - [ ] Subnet list  
@@ -89,23 +76,6 @@ Add these:
 - [ ] Target group health check screen  
 - [ ] Auto Scaling Group dashboard  
 - [ ] EC2 instances in private subnets  
-
-Create a folder:
-week4/screenshots/
-
-yaml
-Copy code
-
----
-
-# 5. Notes & Observations
-_Write what you learned or any issues encountered:_
-
--  
--  
--  
-
----
 
 # 6. Summary
 
