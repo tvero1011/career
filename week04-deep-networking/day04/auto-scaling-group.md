@@ -1,6 +1,6 @@
 ## Auto Scaling Group (ASG) — Setup & Documentation
 
-### 🎯 Objective
+### Objective
 Today’s goal is to configure an **Auto Scaling Group (ASG)** using:
 - A Launch Template  
 - Private subnets  
@@ -9,15 +9,11 @@ Today’s goal is to configure an **Auto Scaling Group (ASG)** using:
 
 This makes your architecture **fault-tolerant and scalable**, just like real production systems.
 
----
-
 # 1. What Auto Scaling Group Does
 - Ensures your application always has healthy EC2 instances  
 - Automatically replaces failed instances  
 - Scales up during high traffic  
 - Scales down to reduce cost  
-
----
 
 # 2. Requirements Before Starting
 You should already have:
@@ -25,8 +21,6 @@ You should already have:
 - ✔ VPC with 2 private subnets  
 - ✔ Target Group (Week 4 Day 3)  
 - ✔ NAT Gateway (private subnet internet access)  
-
----
 
 # 3. ASG Configuration Steps (What I Completed)
 
@@ -46,8 +40,6 @@ You should already have:
 - [ ] CPU < 40% → scale in  
 - [ ] Cooldown period: 120 seconds  
 
----
-
 # 4. ASG Verification
 
 ### ✔ Check 1 — Instances launched  
@@ -61,36 +53,14 @@ You should already have:
 
 ### ✔ Check 3 — Scaling Test (Optional)
 Run on EC2:
-
-yes > /dev/null &
-
-css
-Copy code
-
 - [ ] CPU increases  
 - [ ] ASG scales up  
 
 Stop test:
-
 killall yes
-
-yaml
-Copy code
-
 - [ ] ASG scales down  
 
----
-
 # 5. Screenshots to Include
-
-Create folder:
-week4/screenshots/
-
-yaml
-Copy code
-
-Add screenshots of:
-
 - [ ] Launch Template  
 - [ ] ASG creation wizard  
 - [ ] ASG dashboard  
@@ -98,18 +68,7 @@ Add screenshots of:
 - [ ] EC2 instances list  
 - [ ] Target group health checks  
 
----
-
-# 6. Notes & Observations
-_Write down what you learned, any errors, fixes, or insights._
-
--  
--  
--  
-
----
-
-# 7. Summary
+# 6. Summary
 
 Today I configured:
 - Launch Template  
