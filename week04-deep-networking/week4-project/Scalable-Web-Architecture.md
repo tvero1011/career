@@ -27,10 +27,11 @@ This mirrors a real-world AWS production setup.
 - Instance type: t2.micro
 - Security group: allow ALB only
 - User data:
-                #!/bin/bash
-                sudo yum install -y nginx
-                sudo systemctl start nginx
-                echo "<h1>Server: $(hostname)</h1>" > /usr/share/nginx/html/index.html
+
+        [//]: start here  --->  #!/bin/bash
+        [//]:                   sudo yum install -y nginx
+        [//]:                   sudo systemctl start nginx
+        [//]:                   echo "<h1>Server: $(hostname)</h1>" > /usr/share/nginx/html/index.html
 
 
 # 3. Auto Scaling Group
