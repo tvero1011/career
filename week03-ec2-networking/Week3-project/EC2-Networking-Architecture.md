@@ -1,4 +1,5 @@
 # Week 3 — Weekend Project: EC2 + Networking
+![Status](https://img.shields.io/badge/Project-Completed-brightgreen)
 
 # Project Goal
 By the end of this weekend, you will have:

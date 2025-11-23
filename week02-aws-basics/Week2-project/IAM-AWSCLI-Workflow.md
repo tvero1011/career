@@ -1,4 +1,5 @@
 # Week 2 Weekend Project — Full IAM + CLI Workflow
+![Status](https://img.shields.io/badge/Project-Completed-brightgreen)
 
 ## Goal
 Build a complete IAM workflow using **AWS CLI only**.

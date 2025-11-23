@@ -1,4 +1,5 @@
 # Linux File Organizer (Weekend Project)
+![Status](https://img.shields.io/badge/Project-Completed-brightgreen)
 
 A Linux shell automation project that organizes files into folders by type.
 This demonstrates skills in Bash scripting, logging, loops, conditions, and automation.
