@@ -15,7 +15,7 @@ This project builds a fully functional, highly available, auto-healing web archi
 
 ---
 
-## 📘 Architecture Overview
+## Architecture Overview
 
 ```
 Internet
@@ -43,7 +43,7 @@ This represents a production-style AWS web architecture supporting **high availa
 
 ---
 
-## 📁 Project Components
+## Project Components
 
 | Component | Purpose |
 |----------|----------|
@@ -59,9 +59,9 @@ This represents a production-style AWS web architecture supporting **high availa
 
 ---
 
-## 🧱 Step-by-Step Build
+## Step-by-Step Build
 
-### **1️⃣ Create VPC & Subnets**
+### **Create VPC & Subnets**
 - Create VPC: `10.0.0.0/16`
 - Create 2 Public Subnets (AZ A, B)
 - Create 2 Private Subnets (AZ A, B)
@@ -71,13 +71,13 @@ This represents a production-style AWS web architecture supporting **high availa
 
 ---
 
-### **2️⃣ Internet Gateway (IGW)**
+### **Internet Gateway (IGW)**
 - Create IGW
 - Attach it to your VPC
 
 ---
 
-### **3️⃣ NAT Gateway**
+### **NAT Gateway**
 - Create in Public Subnet A
 - Allocate Elastic IP
 - Add route in Private Route Table:
@@ -87,7 +87,7 @@ This represents a production-style AWS web architecture supporting **high availa
 
 ---
 
-### **4️⃣ Route Tables**
+### **Route Tables**
 
 #### Public Route Table
 ```
@@ -99,9 +99,9 @@ This represents a production-style AWS web architecture supporting **high availa
 0.0.0.0/0 → NAT Gateway
 ```
 
----
 
-### **5️⃣ Create Application Load Balancer**
+
+### **Create Application Load Balancer**
 - Type: Application Load Balancer
 - Scheme: Internet-facing
 - Subnets: Public Subnet A & B
@@ -113,14 +113,14 @@ Allow HTTP (80) from 0.0.0.0/0
 
 ---
 
-### **6️⃣ Create Target Group**
+### **Create Target Group**
 - Type: Instance
 - Port: 80
 - Health Check Path: `/`
 
 ---
 
-### **7️⃣ Create Launch Template**
+### **Create Launch Template**
 Name: `App-LT`
 
 **User Data:**
@@ -160,28 +160,28 @@ ASG will maintain your desired instance count.
 
 ---
 
-## 🔍 Testing Checklist
+## Testing Checklist
 
-### ✔ ALB DNS Test
+### ALB DNS Test
 Open:
 ```
 http://your-alb-dns.amazonaws.com
 ```
 You should see hostname responses switching between servers.
 
-### ✔ Auto-Healing Test
+### Auto-Healing Test
 1. Terminate an ASG EC2 instance
 2. ASG launches a new one automatically
 3. Target Group turns **healthy** again
 
-### ✔ Multi-AZ High Availability Test
+### Multi-AZ High Availability Test
 Confirm:
 - EC2 instance in Private Subnet A
 - EC2 instance in Private Subnet B
 
 ---
 
-## 🧠 Key Learnings
+## Key Learnings
 - Difference between IGW & NAT Gateway
 - Designing multi-AZ architectures
 - How ALB + ASG provide high availability
@@ -193,9 +193,15 @@ Confirm:
 ---
 
 ## 📸 Screenshots / Evidence
-(Add your screenshots below)
+<img width="710" height="379" alt="vpc" src="https://github.com/user-attachments/assets/cfe38525-5e5e-4f38-b967-0e661f02e990" />
+<img width="722" height="233" alt="subnets" src="https://github.com/user-attachments/assets/543f998f-b581-45a5-97cb-164e4a4068e8" />
+<img width="723" height="225" alt="routes" src="https://github.com/user-attachments/assets/3e98d605-426d-412d-a8ea-a5eb7b6480e3" />
+<img width="715" height="199" alt="igw" src="https://github.com/user-attachments/assets/df4e9032-298c-4cae-8108-baa28794b98c" />
+<img width="725" height="363" alt="nat" src="https://github.com/user-attachments/assets/3736d28e-84c2-458b-bb84-c97cf22ab9a4" />
+<img width="702" height="488" alt="tg" src="https://github.com/user-attachments/assets/9582f421-1595-4437-8535-ec3c601b5626" />
+<img width="688" height="486" alt="alb" src="https://github.com/user-attachments/assets/4f2860b3-a3e1-4e8e-bd08-a434ca9c46a2" />
+<img width="669" height="752" alt="asg" src="https://github.com/user-attachments/assets/74f78d6f-4dd0-4056-b1f2-050f3302e599" />
 
----
 
-## ✅ Project Completed
+## Project Completed
 You have successfully built a **production-style**, **scalable**, **fault-tolerant** web architecture on AWS.
