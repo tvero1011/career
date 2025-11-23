@@ -18,25 +18,8 @@ This project builds a fully functional, highly available, auto-healing web archi
 ## Architecture Overview
 
 ```
-Internet
-   │
-   ▼
-Application Load Balancer (Public Subnets)
-   │
-   ▼
-Target Group
-   │
-   ▼
-Auto Scaling Group
- ┌───────┴────────┐
- ▼                ▼
-EC2 (Private A)  EC2 (Private B)
-   │                │
-   └───────┬────────┘
-           ▼
-     NAT Gateway (Public Subnet)
-           ▼
-        Internet
+<img width="1024" height="1536" alt="9e900f74-1a2f-476e-a34f-34ea2c843697" src="https://github.com/user-attachments/assets/7284d20b-336c-4b85-a234-04fe04865dcc" />
+
 ```
 
 This represents a production-style AWS web architecture supporting **high availability**, **automatic scaling**, and **secure private networking**.
@@ -122,6 +105,9 @@ Allow HTTP (80) from 0.0.0.0/0
 
 ### **Create Launch Template**
 Name: `App-LT`
+AMI used: amazon-linux
+Instance type: t2.micro
+Security group: allow ALB only
 
 **User Data:**
 ```bash
