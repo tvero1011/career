@@ -1,0 +1,4 @@
+- Configured AWS credentials securely
+- Installed and verified Boto3
+- Created first read-only AWS automation script
+- Implemented defensive error handling
