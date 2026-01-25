@@ -25,3 +25,6 @@ jobs:
       - name: Sync static site to S3
         run: |
           aws s3 sync static-site/ s3://career-c-static-site-2026 --delete
+      
+      - name: List repo files
+        run: ls -R
