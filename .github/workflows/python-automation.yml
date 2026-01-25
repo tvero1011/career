@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Python script
         run: |
-             python week05-Python-Review-automation/day2-boto3-s3-list/list_s3_buckets.py
+             python career/week05-Python-Review-automation/day2-boto3-s3-list/list_s3_buckets.py
 
       - name: Upload bucket list artifact
         uses: actions/upload-artifact@v4
