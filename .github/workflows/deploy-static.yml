@@ -4,27 +4,33 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Allows manual run from GitHub UI
-    
+  workflow_dispatch:  # allows manual trigger from GitHub UI
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout the repo
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # 2️⃣ Debug: list all files to confirm folder path
+      - name: List repository files
+        run: |
+          echo "Listing all files in repo:"
+          ls -R
+
+      # 3️⃣ Configure AWS credentials from GitHub Secrets
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-east-1  # replace with your region
+          aws-region: ap-east-1  # replace with your bucket region
 
+      # 4️⃣ Sync static site folder to S3
       - name: Sync static site to S3
         run: |
+          # Update this path if your static-site folder is inside another folder
           aws s3 sync static-site/ s3://career-c-static-site-2026 --delete
-      
-      - name: List repo files
-        run: ls -R
