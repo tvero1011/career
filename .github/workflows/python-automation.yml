@@ -37,7 +37,7 @@ jobs:
           week05-Python-Review-automation/day2-boto3-s3-list/list_s3_buckets.py
 
       - name: Upload bucket list artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bucket-list
           path: bucket-list.txt
