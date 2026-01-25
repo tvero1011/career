@@ -33,9 +33,16 @@ jobs:
 
       - name: Run Week 5 scripts
         run: |
-          python week5/list_s3_buckets.py
+          python week05-Python-Review-automation/day2-boto3-S3-list/list_s3_buckets.py > bucket-list.txt
 
       - name: Run Week 6 scripts
         run: |
-          python week6/ec2_monitoring.py
+          python week06-automation-projects/day2-automate-budgets/budget_automation.py > budget-report.txt
 
+      - name: Upload budget report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: automation-budget-report
+          path: |
+                bucket-list.txt
+                budget-report.txt

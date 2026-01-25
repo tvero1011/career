@@ -16,7 +16,5 @@ def list_buckets():
     except ClientError as e:
         print(f"AWS error: {e}")
 
-
-
 if __name__ == "__main__":
     list_buckets()
