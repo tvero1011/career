@@ -1,0 +1,48 @@
+name: Run Python Automation Scripts
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # allows manual run from GitHub UI
+
+jobs:
+  run-scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install boto3 botocore
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2  # replace with your region
+
+      - name: Run Week 5 scripts
+        run: |
+          python week05-Python-Review-automation/day2-boto3-S3-list/list_s3_buckets.py > bucket-list.txt
+
+      - name: Run Week 6 scripts
+        run: |
+          python week06-automation-projects/day2-automate-budgets/budget_automation.py > budget-report.txt
+
+      - name: Upload budget report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: automation-budget-report
+          path: |
+                bucket-list.txt
+                budget-report.txt
