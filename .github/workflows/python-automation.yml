@@ -44,7 +44,7 @@ jobs:
       # 6️⃣ Run the Python script
       - name: Run Python script
         run: |
-          python week05-Python-Review-automation/day2-boto3-S3-list/list_s3_buckets.py
+          python week05-Python-Review-automation/day2-boto3-S3-list/list_s3_buckets.py > bucket-list.txt
 
       # 7️⃣ Upload the result as an artifact
       - name: Upload bucket list artifact
