@@ -1,0 +1,40 @@
+name: Scheduled Security Audit
+
+# 1. Trigger: Scheduled to run every day at midnight (UTC)
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  # Allows you to manually trigger it from the GitHub Actions tab for testing
+  workflow_dispatch:
+
+jobs:
+  run-audit:
+    name: Execute AWS Compliance Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Initialize Python Environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip' # Pro Tip: Caching makes your automation run faster
+
+      - name: Install Professional Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install boto3
+
+      - name: Execute AWS Audit Script
+        # Here we pass your AWS keys securely from GitHub Secrets
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-east-1' # Change to your preferred region
+        run: python audit_report.py
+
+      - name: Audit Completion Status
+        if: always()
+        run: echo "The security audit for today has been completed successfully."

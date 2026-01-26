@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Professional S3 Bucket Template with Security Best Practices.
+  This template provisions an encrypted, private bucket for organizational data.
+
+Parameters:
+  EnvironmentName:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, staging, prod]
+    Description: Deployment environment (e.g., dev, staging, prod)
+
+Resources:
+  # The Logical ID of the resource
+  ProjectDataBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      # Using a Sub function to ensure the name includes the Account ID for uniqueness
+      BucketName: !Sub 'corp-data-audit-${AWS::AccountId}-${EnvironmentName}'
+      
+      # PRO FEATURE: Enforce Security via "Public Access Block"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+      # PRO FEATURE: Versioning (protects against accidental deletion)
+      VersioningConfiguration:
+        Status: Enabled
+
+      # PRO FEATURE: Cost-Center Tagging
+      Tags:
+        - Key: "ManagedBy"
+          Value: "CloudFormation"
+        - Key: "Environment"
+          Value: !Ref EnvironmentName
+        - Key: "Project"
+          Value: "Career-Pivot-Automation"
+
+Outputs:
+  BucketArn:
+    Description: "The Amazon Resource Name (ARN) of the newly created bucket."
+    Value: !GetAtt ProjectDataBucket.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-BucketArn"

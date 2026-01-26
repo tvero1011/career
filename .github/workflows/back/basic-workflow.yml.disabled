@@ -1,0 +1,27 @@
+name: Day 2 Basic Workflow
+# 1. The Trigger: What starts the factory?
+on: [push]
+
+jobs:
+  # 2. The Runner: What kind of computer do we need?
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    # 3. The Steps: What are the specific instructions?
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        # This "downloads" your code onto the GitHub computer
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Verify Python Installation
+        run: python --version
+
+      - name: Run a Simple Python Script
+        run: |
+          echo "print('Hello from the GitHub Action Runner!')" > temp_script.py
+          python hello_cloud.py
