@@ -1,0 +1,7 @@
+services:
+  web:
+    image: nginx:alpine  # lightweight web server
+    ports:
+      - "8080:80"
+  redis:
+    image: redis:alpine
