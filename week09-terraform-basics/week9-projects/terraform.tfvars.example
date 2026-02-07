@@ -1,0 +1,4 @@
+# terraform.tfvars
+vpc_id    = ""
+subnet_id = ""
+ami_id    = ""
